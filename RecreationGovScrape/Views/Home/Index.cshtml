@@ -1,0 +1,75 @@
+﻿@model RIDB
+
+
+<head>
+    <style>
+        #map {
+            height: 100%;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #floating-panel {
+            position: absolute;
+            top: 10px;
+            left: 25%;
+            z-index: 5;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #999;
+            text-align: center;
+            font-family: "Roboto", "sans-serif";
+            line-height: 30px;
+            padding-left: 10px;
+        }
+    </style>
+
+
+    <script>
+        function initMap(object) {
+
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: object.lat, lng: object.lng },
+                zoom: 18,
+                mapTypeId: "satellite",
+            });
+            map.setTilt(45);
+        }
+
+    </script>
+
+    <ul>
+        <li>
+            @for (var i = 0; i < Model.metaData.results.current_count; i++)
+            {
+        <h5>
+            @Model.recData[i].FacilityName
+        </h5>
+                        <br />
+                      <iframe width="400"
+                              height="400"
+                              frameborder="1" style="border:0"
+                              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAb9XY0o-KGm95YmvxsEmtE1WlKBCPOxSA&q=@Model.recData[i].FacilityName">
+                      </iframe>
+                      <br /><br /><br />
+                                                                                        @*<iframe width="400"
+                                                                                                height="400"
+                                                                                                frameborder="1" style="border:0"
+                                                                                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAb9XY0o-KGm95YmvxsEmtE1WlKBCPOxSA&q=@Model.recData[i].FacilityLatitude,@Model.recData[i].FacilityLongitude">
+                                                                                        </iframe>*@            
+              }
+        </li>
+
+
+    </ul>
+
+
+
+
+</head>
+
+
