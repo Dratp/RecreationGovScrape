@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using RecreationGovScrape.Models;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
+﻿using Dapper;
 using Dapper.Contrib.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using RecreationGovScrape.Models;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using Dapper;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace RecreationGovScrape.Controllers
 {
@@ -24,6 +20,7 @@ namespace RecreationGovScrape.Controllers
         {
             _logger = logger;
         }
+
 
         public async Task<IActionResult> Index()
         {
@@ -37,16 +34,22 @@ namespace RecreationGovScrape.Controllers
             int offset = 0;
 
             RIDB data = new RIDB();
-            for (int i = 0; i<activities.Length; i++)
+
+            for (int i = 0; i < activities.Length; i++)
             {
-                var response = await client.GetAsync($"facilities?limit=50&offset={offset}&state=MI&activity={activities[i]}");
-                data = await response.Content.ReadAsAsync<RIDB>();
-                LogInfo(data, activities[i]);
+                
+                offset = 0;
+                do
+                {
+                    var response = await client.GetAsync($"facilities?limit=50&offset={offset}&state=MI&activity={activities[i]}");
+                    data = await response.Content.ReadAsAsync<RIDB>();
+                    LogInfo(data, activities[i]);
+
+                    offset = offset + 50;
+                } while (offset < data.metaData.results.total_count);
             }
-            
 
             return View(data);
-
         }
 
         public void LogInfo(RIDB data, string act)
@@ -60,18 +63,17 @@ namespace RecreationGovScrape.Controllers
             {
                 string name = rec.FacilityName.ToString();
                 name.Replace("'", " ");
-                
-
-                db.Query($"insert into RIDB (FacilityID, FacilityName, FacilityTypeDescription, FacilityLongitude, FacilityLatitude, FacilityPhone, FacilityEmail) Values ('{rec.FacilityID}', '{name}', '{rec.FacilityTypeDescription}', '{rec.FacilityLongitude}', '{rec.FacilityLatitude}', '{rec.FacilityPhone}', '{rec.FacilityEmail}')");
+                db.Insert(rec);
                 db.Query($"insert into RIDBAct (FacilityID, Activity) Values ('{rec.FacilityID}', '{act}')");
             }
-
-
 
         }
 
 
-
+        public IActionResult Watts()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {

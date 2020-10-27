@@ -69,3 +69,60 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.flex-container1 {
+    background-color: red;
+    flex-grow: 1;
+}
+
+.flex-container2 {
+    flex-grow: 3;
+    background-color: black;
+    flex-direction: row;
+    align-content: center;
+    left: 50%;
+}
+
+form {
+    width: 220px;
+    height: 220px;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+
+.Outer {
+    height: 300px;
+    width: 300px;
+    padding: 2.5em;
+    border: solid 2.5em #c00;
+    border-radius: 50%;
+    border-color: red;
+    align-item: center;
+}
+
+.Middle {
+    height: 200px;
+    width: 200px;
+    padding: 2.5em;
+    border: solid 2.5em #c00;
+    border-radius: 50%;
+    border-color: white;
+    align-item: center;
+}
+
+.Inner {
+    height: 100px;
+    width: 100px;
+    padding: 2.5em;
+    border: solid 2.5em #c00;
+    border-radius: 50%;
+    border-color: Red;
+    align-item: center;
+}

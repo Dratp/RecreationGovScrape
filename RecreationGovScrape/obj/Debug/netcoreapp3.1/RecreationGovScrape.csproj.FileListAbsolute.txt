@@ -118,3 +118,4 @@ C:\Users\DHeizer\source\repos\RecreationGovScrape\RecreationGovScrape\obj\Debug\
 C:\Users\DHeizer\source\repos\RecreationGovScrape\RecreationGovScrape\obj\Debug\netcoreapp3.1\RecreationGovScrape.dll
 C:\Users\DHeizer\source\repos\RecreationGovScrape\RecreationGovScrape\obj\Debug\netcoreapp3.1\RecreationGovScrape.pdb
 C:\Users\DHeizer\source\repos\RecreationGovScrape\RecreationGovScrape\obj\Debug\netcoreapp3.1\RecreationGovScrape.genruntimeconfig.cache
+C:\Users\DHeizer\source\repos\RecreationGovScrape\RecreationGovScrape\obj\Debug\netcoreapp3.1\Razor\Views\Home\Watts.cshtml.g.cs

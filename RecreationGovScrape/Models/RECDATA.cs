@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper.Contrib.Extensions;
 
 namespace RecreationGovScrape.Models
 {
+    [Table("RIDB")]
     public class RECDATA
     {
         public string FacilityID { get; set; }
