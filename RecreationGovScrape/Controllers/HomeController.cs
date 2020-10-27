@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using RecreationGovScrape.Models;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using Dapper.Contrib.Extensions;
+using System.Data;
+using System.Data.SqlClient;
+using Dapper;
 
 namespace RecreationGovScrape.Controllers
 {
@@ -32,13 +36,39 @@ namespace RecreationGovScrape.Controllers
             string[] activities = new string[] { "Canoeing", "Biking", "Fishing", "Hiking" };
             int offset = 0;
 
-
-            var response = await client.GetAsync($"facilities?limit=50&offset={offset}&state=MI&activity={activities[0]}");
-            RIDB data = await response.Content.ReadAsAsync<RIDB>();
+            RIDB data = new RIDB();
+            for (int i = 0; i<activities.Length; i++)
+            {
+                var response = await client.GetAsync($"facilities?limit=50&offset={offset}&state=MI&activity={activities[i]}");
+                data = await response.Content.ReadAsAsync<RIDB>();
+                LogInfo(data, activities[i]);
+            }
+            
 
             return View(data);
 
-         }
+        }
+
+        public void LogInfo(RIDB data, string act)
+        {
+            const string server = "Server=7RP7Q13\\SQLEXPRESS;Database=Recdit;user id=csharp;password=abc123";
+            IDbConnection db = new SqlConnection(server);
+
+
+
+            foreach (RECDATA rec in data.recData)
+            {
+                string name = rec.FacilityName.ToString();
+                name.Replace("'", " ");
+                
+
+                db.Query($"insert into RIDB (FacilityID, FacilityName, FacilityTypeDescription, FacilityLongitude, FacilityLatitude, FacilityPhone, FacilityEmail) Values ('{rec.FacilityID}', '{name}', '{rec.FacilityTypeDescription}', '{rec.FacilityLongitude}', '{rec.FacilityLatitude}', '{rec.FacilityPhone}', '{rec.FacilityEmail}')");
+                db.Query($"insert into RIDBAct (FacilityID, Activity) Values ('{rec.FacilityID}', '{act}')");
+            }
+
+
+
+        }
 
 
 
